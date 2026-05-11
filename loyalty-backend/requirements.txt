@@ -5,6 +5,5 @@ huggingface_hub
 xgboost
 scikit-learn
 pandas
-hmmlearn
 fastparquet
 python-dotenv

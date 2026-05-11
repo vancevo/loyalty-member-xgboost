@@ -14,5 +14,7 @@ upload_raw_dataset.py
 # Python caches and envs
 venv/
 .venv/
+env/
+.env/
 __pycache__/
 *.pyc
