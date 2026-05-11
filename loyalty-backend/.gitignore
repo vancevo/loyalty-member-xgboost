@@ -1,0 +1,44 @@
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Python caching
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Tệp dữ liệu lớn không nên push lên Git
+*.csv
+*.xlsx
+online_retail_II.csv
+
+# Tệp mô hình và dataset được sinh ra (sẽ đẩy lên Hugging Face thay vì Github)
+models/
+*.pkl
+*.joblib
+*.h5
+*.pt
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+docker-compose.override.yml

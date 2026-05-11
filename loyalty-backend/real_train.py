@@ -10,9 +10,20 @@ import joblib
 import os
 from datasets import Dataset
 
-print("1. Đang đọc dữ liệu từ file local online_retail_II.csv...")
+print("1. Đang đọc dữ liệu gốc...")
 try:
-    df = pd.read_csv("online_retail_II.csv", encoding="utf-8", encoding_errors="replace", dtype=str)
+    if os.path.exists("online_retail_II.csv"):
+        print("-> Đã tìm thấy tệp cục bộ 'online_retail_II.csv', tiến hành tải...")
+        df = pd.read_csv("online_retail_II.csv", encoding="utf-8", encoding_errors="replace", dtype=str)
+    else:
+        print("-> Tệp cục bộ không tồn tại. Đang tự động kéo dữ liệu từ Hugging Face (vancevo/online-retail-ii)...")
+        from datasets import load_dataset
+        # Kéo dataset trực tiếp từ cloud
+        dataset = load_dataset("vancevo/online-retail-ii", split="train")
+        df = dataset.to_pandas()
+        # Ép tất cả về string tương tự như read_csv(dtype=str)
+        df = df.astype(str)
+
     # Đổi tên cột cho chuẩn với file gốc
     df.columns = [c.strip().replace(" ", "_") if c != "Customer ID" else c for c in df.columns]
     if "Customer_ID" in df.columns:
@@ -23,7 +34,8 @@ try:
     df['Price'] = pd.to_numeric(df['Price'], errors='coerce')
     
 except Exception as e:
-    print(f"Lỗi đọc file: {e}")
+    print(f"Lỗi đọc dữ liệu: {e}")
+    print("Vui lòng đảm bảo biến môi trường HF_TOKEN đã được thiết lập hoặc file CSV có sẵn.")
     exit(1)
 
 print(f"Dữ liệu gốc: {df.shape}")
