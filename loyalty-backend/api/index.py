@@ -18,23 +18,35 @@ raw_df = None          # Online Retail II raw data
 customers_df = None    # Unique customers extracted from raw
 
 def pull_dataset():
-    """Pull processed loyalty dataset từ HuggingFace bằng Parquet để tiết kiệm RAM/Disk."""
+    """Pull processed loyalty dataset từ HuggingFace bằng hf_hub_download."""
     global loyalty_dataset_df
     try:
-        url = f"https://huggingface.co/datasets/{DATASET_REF}/resolve/main/data/train-00000-of-00001.parquet"
-        print(f"Đang pull loyalty dataset: {url}...")
-        loyalty_dataset_df = pd.read_parquet(url, engine='fastparquet')
+        from huggingface_hub import hf_hub_download
+        print(f"Đang pull loyalty dataset: {DATASET_REF}...")
+        file_path = hf_hub_download(
+            repo_id=DATASET_REF, 
+            filename="data/train-00000-of-00001.parquet", 
+            repo_type="dataset",
+            token=HF_TOKEN if HF_TOKEN != "hf_xxxxxxxxxxxxxxxxx" else None
+        )
+        loyalty_dataset_df = pd.read_parquet(file_path, engine='fastparquet')
         print(f"✅ Loyalty dataset: {loyalty_dataset_df.shape}")
     except Exception as e:
         print(f"Warning: Loyalty dataset lỗi ({e})")
 
 def pull_raw_dataset():
-    """Pull raw Online Retail II dataset từ HuggingFace qua Parquet HTTP, trích xuất danh sách customers."""
+    """Pull raw Online Retail II dataset từ HuggingFace qua hf_hub_download."""
     global raw_df, customers_df
     try:
-        url = f"https://huggingface.co/datasets/{RAW_DATASET_REF}/resolve/main/data/train-00000-of-00001.parquet"
-        print(f"Đang pull raw dataset: {url}...")
-        raw_df = pd.read_parquet(url, engine='fastparquet')
+        from huggingface_hub import hf_hub_download
+        print(f"Đang pull raw dataset: {RAW_DATASET_REF}...")
+        file_path = hf_hub_download(
+            repo_id=RAW_DATASET_REF, 
+            filename="data/train-00000-of-00001.parquet", 
+            repo_type="dataset",
+            token=HF_TOKEN if HF_TOKEN != "hf_xxxxxxxxxxxxxxxxx" else None
+        )
+        raw_df = pd.read_parquet(file_path, engine='fastparquet')
         print(f"✅ Raw dataset: {raw_df.shape}")
         _build_customers()
     except Exception as e:
