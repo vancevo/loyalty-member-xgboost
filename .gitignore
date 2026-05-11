@@ -1,0 +1,17 @@
+# Environment variables
+.env
+.env.local
+
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Large files
+*.csv
+*.xlsx
+online_retail_II.csv
+final_term.docx
+
+# Mac OS
+.DS_Store
