@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pydantic
+huggingface_hub
+datasets
+xgboost
+scikit-learn
+pandas
+hmmlearn
+psycopg2-binary
+sqlalchemy
+python-dotenv
