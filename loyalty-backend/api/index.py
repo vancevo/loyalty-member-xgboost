@@ -7,7 +7,7 @@ import pandas as pd
 from contextlib import asynccontextmanager
 
 HF_TOKEN = os.getenv("HF_TOKEN")
-HF_USERNAME = os.getenv("HF_USERNAME", "your_username")
+HF_USERNAME = os.getenv("HF_USERNAME", "vancevo")
 DATASET_REPO = os.getenv("HF_DATASET_REPO", "loyalty-behavior-dataset")
 DATASET_REF = f"{HF_USERNAME}/{DATASET_REPO}"
 RAW_DATASET_REF = f"{HF_USERNAME}/online-retail-ii"
