@@ -1,3 +1,12 @@
+---
+title: Loyalty Backend
+emoji: 📊
+colorFrom: indigo
+colorTo: blue
+sdk: docker
+pinned: false
+---
+
 # Loyalty Backend
 
 Đây là thư mục chứa toàn bộ lõi xử lý dữ liệu (Data Pipeline), hệ thống học máy (Machine Learning) và API (FastAPI) cho ứng dụng phân tích lòng trung thành của khách hàng.
