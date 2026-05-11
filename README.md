@@ -117,8 +117,24 @@ Mở trình duyệt truy cập vào **[http://localhost:3000](http://localhost:3
 
 ---
 
-## 5. Ghi chú Deployment (Triển khai Serverless trên Vercel)
+## 5. Triển khai (Deployment)
 
-Dự án hoàn toàn có thể triển khai lên **Vercel** nhờ cấu trúc tách biệt và sử dụng Serverless Framework.
-- **Frontend**: Kết nối nhánh Github với Vercel, chọn Framework là `Next.js` và trỏ Root Directory vào thư mục `loyalty-frontend`.
-- **Backend**: Vercel hỗ trợ Python Backend thông qua Serverless Functions. Trỏ Root Directory vào `loyalty-backend`. Tệp `vercel.json` đã được định cấu hình sẵn lộ trình (rewrites) để các yêu cầu từ Frontend tới `/api/` được chuyển hướng vào `api/index.py`. Các biến số HuggingFace sẽ được nhập trực tiếp trong mục Environment Variables của Vercel Dashboard.
+Hệ thống được tối ưu hóa để triển khai trên các nền tảng đám mây hiện đại nhằm đảm bảo hiệu năng xử lý Machine Learning:
+
+### 🚀 Backend (Hugging Face Spaces)
+Do Backend yêu cầu tài nguyên CPU/RAM lớn để xử lý dữ liệu (hơn 900MB dependencies), chúng tôi sử dụng **Hugging Face Spaces** với SDK **Docker**.
+- **Địa chỉ API:** `https://vancevo-loyalty-backend.hf.space`
+- **Cách cập nhật:** Sử dụng kỹ thuật "Snapshot Push" để đẩy mã nguồn từ thư mục `loyalty-backend` lên Space (đã được cấu hình trong `Dockerfile` chạy trên cổng 7860).
+
+### 🌐 Frontend (Vercel)
+Giao diện Next.js được triển khai trên **Vercel** để đảm bảo tốc độ phản hồi nhanh nhất cho người dùng.
+- **Cấu hình:** Biến môi trường `NEXT_PUBLIC_API_URL` trỏ tới địa chỉ API trên Hugging Face Spaces.
+
+---
+
+## 6. Liên hệ & Đóng góp
+
+Nếu bạn có bất kỳ câu hỏi nào về thuật toán HMM hay quy trình huấn luyện XGBoost trong dự án này, vui lòng liên hệ qua trang cá nhân của tác giả.
+
+**Author:** Vinh (Vance Vo)  
+**Project:** Loyalty Data Mining System 2026

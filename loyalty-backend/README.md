@@ -80,16 +80,29 @@ Truy cập `http://localhost:8000/docs` để xem giao diện SwaggerUI kiểm t
 
 ---
 
-## 5. Deployment (Triển khai Serverless & Kaggle)
+## 5. Deployment (Triển khai Cloud)
 
-Do Backend sử dụng các thư viện Machine Learning rất nặng (`xgboost`, `scipy`, `pandas`), hệ thống có 2 giải pháp triển khai:
+Hệ thống Backend yêu cầu tài nguyên CPU/RAM lớn (khoảng 1GB cho bộ thư viện ML), do đó chúng tôi ưu tiên triển khai trên **Hugging Face Spaces**.
 
-**A. Triển khai Vercel (Miễn phí, 500MB Limit)**
-- Đã được cấu hình file `.vercelignore` cắt giảm tối đa thư viện dư thừa (như `pyarrow` hay `datasets`).
-- Phù hợp cho mục đích API dự báo nhanh.
+### 🚀 Triển khai trên Hugging Face Spaces (Khuyên dùng)
+Hugging Face Spaces cung cấp môi trường Docker mạnh mẽ (16GB RAM) hoàn toàn miễn phí.
 
-**B. Triển khai Kaggle (Miễn phí, RAM 30GB - Khuyên dùng)**
-Do hạn chế bộ nhớ của Vercel (500MB Package), Vercel có thể sẽ lỗi khi build. Kaggle là môi trường hoàn hảo để gánh backend này.
+**Các bước thực hiện:**
+1. Tạo một **New Space** trên Hugging Face, chọn SDK là **Docker** (Blank).
+2. Tại máy tính cục bộ, thêm remote và thực hiện "Snapshot Push" (để tránh lỗi lịch sử Git chứa file nặng):
+   ```bash
+   # Thêm remote (thay URL bằng Space của bạn)
+   git remote add space https://huggingface.co/spaces/vancevo/loyalty-backend
+   
+   # Đẩy mã nguồn Snapshot
+   TREE_SHA=$(git write-tree --prefix=loyalty-backend)
+   COMMIT_SHA=$(git commit-tree $TREE_SHA -m "Deploy to HF Spaces")
+   git push space ${COMMIT_SHA}:main --force
+   ```
+3. Truy cập **Settings > Variables and secrets** trên Space để cấu hình 4 biến môi trường: `HF_TOKEN`, `HF_USERNAME`, `HF_MODEL_REPO`, `HF_DATASET_REPO`.
+
+### 🧪 Triển khai trên Kaggle (Dự phòng)
+Kaggle là môi trường hoàn hảo nếu bạn cần tính toán cực nặng với 30GB RAM.
 - Mở một Notebook mới trên Kaggle.
 - Chạy Cell sau để bật API Tunnel:
 ```python
@@ -102,15 +115,12 @@ import nest_asyncio, os, uvicorn
 from pyngrok import ngrok
 nest_asyncio.apply()
 
-os.environ["HF_TOKEN"] = "hf_xxxxxxxxxxxxxxxxxxx"
+os.environ["HF_TOKEN"] = "hf_xxxxxxxxxxx"
 os.environ["HF_USERNAME"] = "vancevo"
-os.environ["HF_MODEL_REPO"] = "loyalty-models"
-os.environ["HF_DATASET_REPO"] = "loyalty-behavior-dataset"
+# ... set các biến khác ...
 
-# Kết nối Ngrok
 public_url = ngrok.connect(8000)
 print(f"🚀 API Backend: {public_url}")
-
 uvicorn.run("api.index:app", host="0.0.0.0", port=8000)
 ```
-Sau đó, dán `public_url` vào biến `NEXT_PUBLIC_API_URL` của thư mục Frontend để giao tiếp!
+Sau đó, dán `public_url` vào cấu hình Frontend để kết nối.
