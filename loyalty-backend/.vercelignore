@@ -1,0 +1,18 @@
+# Bỏ qua các tệp dữ liệu tĩnh lớn vì Vercel Serverless có giới hạn 250MB
+online_retail_II.csv
+*.csv
+
+# Bỏ qua thư mục models vì API sẽ kéo model trực tiếp từ HuggingFace lúc runtime
+models/
+
+# Bỏ qua các script chạy offline (không cần thiết cho API)
+real_train.py
+push_to_hf.py
+train_and_save.py
+upload_raw_dataset.py
+
+# Python caches and envs
+venv/
+.venv/
+__pycache__/
+*.pyc
